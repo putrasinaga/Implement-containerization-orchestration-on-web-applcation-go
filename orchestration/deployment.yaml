@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  deployment-go-app
+  namespace: default
+  labels:
+    app:  MYAPP
+spec:
+  selector:
+    matchLabels:
+      app: deployment-go-app
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: deployment-go-app
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name: deployment-go-app
+        image: putrasaut/restapi
+        ports:
+        - containerPort:  3000
+          protocol: TCP
